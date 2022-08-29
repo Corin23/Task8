@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -g -Wall 
-TARGET = textproc
+TARGET = txtproc
 
 all: $(TARGET)
 
