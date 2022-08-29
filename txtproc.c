@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 const int MSIZE = 100;
 const int ASCH = 128;
 
@@ -39,11 +40,13 @@ const char *readFile(const char *filename) {
       }
 
       buffer[length++] = c;
+
     }
+
     fclose(file1);
   }
   return buffer;
-  
+
 }
 
 float wpercent(const char *text1, const char *text2) {
@@ -54,9 +57,11 @@ float wpercent(const char *text1, const char *text2) {
   for (int i = 0; text1[i] != '\0'; i++) {
     ++(txt1arr[(int)text1[i]]);
   }
+
   for (int i = 0; text2[i] != '\0'; i++){
     ++(txt2arr[(int)text2[i]]);
   }
+  
   for(int i = 0; i< ASCH; i++){
     if((txt1arr[i] && txt2arr[i]) != 0)
     {
