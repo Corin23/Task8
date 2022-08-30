@@ -13,7 +13,7 @@ typedef struct input{
   int *file2;
 }input;
 
-struct input *readFile(const char *filename1, const char *filename2, int *f1size, int *f2size) {
+struct input *readFile(const char *filename1, const char *filename2, int *fsize){
   int c, ch;
   struct input *retStruc;
 
@@ -37,12 +37,12 @@ struct input *readFile(const char *filename1, const char *filename2, int *f1size
 
   while((c = getc(file1)) != EOF){
     retStruc->file1[c]++;
-    (*f1size)++;
+    (*fsize)++;
     }
 
   while((ch = getc(file2)) != EOF){
     retStruc->file2[ch]++;
-    (*f2size)++;
+    (*fsize)++;
   }
 
     fclose(file1);
@@ -75,8 +75,8 @@ float wpercent(int *text1, int *text2) {
 }
 
 int main() {
-  int sizef1 = 0, sizef2 = 0;
-  struct input *t1 = readFile(f1, f2, &sizef1, &sizef2);
+  int sizef = 0;
+  struct input *t1 = readFile(f1, f2, &sizef);
   
   float result = wpercent(t1->file1, t1->file2);
 
