@@ -5,82 +5,80 @@
 
 const int MSIZE = 100;
 const int ASCH = 128;
+const char *f1 = "text1.txt";
+const char *f2 = "text2.txt";
 
-const char *readFile(const char *filename) {
-  int c, length = 0;
-  long fsize = MSIZE;
-  char *buffer;
+typedef struct input{
+  int *file1;
+  int *file2;
+}input;
 
-  FILE *file1;
-  file1 = fopen(filename, "r");
+struct input *readFile(const char *filename1, const char *filename2, int *f1size, int *f2size) {
+  int c, ch;
+  struct input *retStruc;
 
-  if (file1 == NULL) {
+  FILE *file1, *file2;
+  file1 = fopen(filename1, "r");
+  file2 = fopen(filename2, "r");
+
+  if (file1 == NULL || file2 == NULL) {
     printf("Error, couldn't open file!");
     exit(EXIT_FAILURE);
   }
 
-  buffer = malloc(fsize * sizeof(char));
+  retStruc = (struct input *) malloc(10 * sizeof(struct input));
+  retStruc->file1 = malloc(ASCH * sizeof(int));
+  retStruc->file2 = malloc(ASCH * sizeof(int));
 
-  if (buffer == NULL) {
-    printf("Memory not allocated!");
+  if(retStruc->file1 == NULL || retStruc->file2 == NULL){
+    printf("Memory allocation failure!");
     exit(EXIT_FAILURE);
   }
 
-  if (file1) {
-    while ((c = getc(file1)) != EOF) {
-
-      if (length > fsize) {
-        fsize += MSIZE;
-        buffer = (char *)realloc(buffer, fsize * sizeof(char));
-
-        if (buffer == NULL) {
-          printf("Couldn't reallocate memory!");
-          exit(EXIT_FAILURE);
-        }
-      }
-
-      buffer[length++] = c;
-
+  while((c = getc(file1)) != EOF){
+    retStruc->file1[c]++;
+    (*f1size)++;
     }
 
-    fclose(file1);
+  while((ch = getc(file2)) != EOF){
+    retStruc->file2[ch]++;
+    (*f2size)++;
   }
-  return buffer;
 
+    fclose(file1);
+    fclose(file2);
+
+  return retStruc;
 }
 
-float wpercent(const char *text1, const char *text2) {
+float wpercent(int *text1, int *text2) {
   int counter = 0, length = 0;
-  int txt1arr[128] = {0}, txt2arr[128] = {0};
+  int txt2arr[128] = {0};
   float result;
-
-  for (int i = 0; text1[i] != '\0'; i++) {
-    ++(txt1arr[(int)text1[i]]);
-  }
 
   for (int i = 0; text2[i] != '\0'; i++){
     ++(txt2arr[(int)text2[i]]);
   }
-  
+
   for(int i = 0; i< ASCH; i++){
-    if((txt1arr[i] && txt2arr[i]) != 0)
+    if((text1[i] && text2[i]) != 0)
     {
-      counter += txt1arr[i];
+      counter += text1[i];
     }
   }
 
-  for (int i = 0; text1[i] != '\0'; i++) {
-    if (isalnum(text1[i]) || ispunct(text1[i]) || isspace(text1[i]))
-      length++;
+  for(int i = 0; i< ASCH; i++){
+    length += text1[i];
   }
 
   return result = (float)counter / length * 100;
 }
 
 int main() {
+  int sizef1 = 0, sizef2 = 0;
+  struct input *t1 = readFile(f1, f2, &sizef1, &sizef2);
+  
+  float result = wpercent(t1->file1, t1->file2);
 
-  const char *t1 = readFile("text1.txt");
-  const char *t2 = "a b";
-  float result = wpercent(t1, t2);
   printf("%.2f percents", result);
 }
