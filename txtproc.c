@@ -3,8 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-const int MSIZE = 100;
-const int ASCH = 128;
+const int NBASCII = 128;
 const char *INPUT_FILE1 = "text1.txt";
 const char *INPUT_FILE2 = "text2.txt";
 
@@ -54,13 +53,13 @@ float wpercent(int *input1_arr, int *input2_arr) {
   int counter = 0, length = 0;
   float result;
 
-  for (int i = 0; i < ASCH; i++) {
+  for (int i = 0; i < NBASCII; i++) {
     if ((input1_arr[i] && input2_arr[i]) != 0) {
       counter += input1_arr[i];
     }
   }
 
-  for (int i = 0; i < ASCH; i++) {
+  for (int i = 0; i < NBASCII; i++) {
     length += input1_arr[i];
   }
 
@@ -69,9 +68,9 @@ float wpercent(int *input1_arr, int *input2_arr) {
 
 int main() {
   int sizef = 0;
-  struct input *t1 = readFile(INPUT_FILE1, INPUT_FILE2, &sizef);
+  struct input *asciival = readFile(INPUT_FILE1, INPUT_FILE2, &sizef);
 
-  float result = wpercent(t1->input_file1, t1->input_file2);
+  float result = wpercent(asciival->input_file1, asciival->input_file2);
 
   printf("%.2f percents", result);
 }
