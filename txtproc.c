@@ -8,14 +8,13 @@ const char *INPUT_FILE1 = "text1.txt";
 const char *INPUT_FILE2 = "text2.txt";
 
 typedef struct input {
-  int input_file1[128];
-  int input_file2[128];
+  int txt1_ascarr[128];
+  int txt2_ascarr[128];
 } input;
 
-struct input *readFile(const char *filename1, const char *filename2,
-                       int *fsize) {
+input readFile(const char *filename1, const char *filename2) {
   int c, ch;
-  struct input *retStruc;
+  input retStruc = {.txt1_ascarr = {0}, .txt2_ascarr = {0}};
 
   FILE *file1, *file2;
   file1 = fopen(filename1, "r");
@@ -26,21 +25,12 @@ struct input *readFile(const char *filename1, const char *filename2,
     exit(EXIT_FAILURE);
   }
 
-  retStruc = (struct input *)malloc(10 * sizeof(struct input));
-
-  if (retStruc->input_file1 == NULL || retStruc->input_file2 == NULL) {
-    printf("Memory allocation failure!");
-    exit(EXIT_FAILURE);
-  }
-
   while ((c = getc(file1)) != EOF) {
-    retStruc->input_file1[c]++;
-    (*fsize)++;
+    retStruc.txt1_ascarr[c]++;
   }
 
   while ((ch = getc(file2)) != EOF) {
-    retStruc->input_file2[ch]++;
-    (*fsize)++;
+    retStruc.txt2_ascarr[ch]++;
   }
 
   fclose(file1);
@@ -67,10 +57,9 @@ float wpercent(int *input1_arr, int *input2_arr) {
 }
 
 int main() {
-  int sizef = 0;
-  struct input *asciival = readFile(INPUT_FILE1, INPUT_FILE2, &sizef);
+  input asciival = readFile(INPUT_FILE1, INPUT_FILE2);
 
-  float result = wpercent(asciival->input_file1, asciival->input_file2);
+  float result = wpercent(asciival.txt1_ascarr, asciival.txt2_ascarr);
 
   printf("%.2f percents", result);
 }
