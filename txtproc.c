@@ -12,7 +12,7 @@ typedef struct input {
   int txt2_ascarr[128];
 } input;
 
-input readFile(const char *filename1, const char *filename2) {
+input readFilesAndCount(const char *filename1, const char *filename2) {
   int c, ch;
   input retStruc = {.txt1_ascarr = {0}, .txt2_ascarr = {0}};
 
@@ -39,7 +39,7 @@ input readFile(const char *filename1, const char *filename2) {
   return retStruc;
 }
 
-float wpercent(int *input1_arr, int *input2_arr) {
+float PossibleRepro(int *input1_arr, int *input2_arr) {
   int counter = 0, length = 0;
   float result;
 
@@ -47,9 +47,6 @@ float wpercent(int *input1_arr, int *input2_arr) {
     if ((input1_arr[i] && input2_arr[i]) != 0) {
       counter += input1_arr[i];
     }
-  }
-
-  for (int i = 0; i < NBASCII; i++) {
     length += input1_arr[i];
   }
 
@@ -57,9 +54,9 @@ float wpercent(int *input1_arr, int *input2_arr) {
 }
 
 int main() {
-  input asciival = readFile(INPUT_FILE1, INPUT_FILE2);
+  input asciival = readFilesAndCount(INPUT_FILE1, INPUT_FILE2);
 
-  float result = wpercent(asciival.txt1_ascarr, asciival.txt2_ascarr);
+  float result = PossibleRepro(asciival.txt1_ascarr, asciival.txt2_ascarr);
 
   printf("%.2f percents", result);
 }
