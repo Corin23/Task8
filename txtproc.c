@@ -7,7 +7,7 @@ const int NBASCII = 128;
 const char *INPUT_FILE1 = "text1.txt";
 const char *INPUT_FILE2 = "text2.txt";
 
-int *countChars(const char *filename) {
+static int *countChars(const char *filename) {
   int c;
   int *retArr;
 
@@ -34,7 +34,7 @@ int *countChars(const char *filename) {
   return retArr;
 }
 
-float getPercentage(int *input1_arr, int *input2_arr) {
+static float getPercentage(int *input1_arr, int *input2_arr) {
   int counter = 0, length = 0;
   float result;
 
