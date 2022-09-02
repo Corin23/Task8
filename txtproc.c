@@ -7,39 +7,34 @@ const int NBASCII = 128;
 const char *INPUT_FILE1 = "text1.txt";
 const char *INPUT_FILE2 = "text2.txt";
 
-typedef struct input {
-  int txt1_ascarr[128];
-  int txt2_ascarr[128];
-} input;
+int *countChars(const char *filename) {
+  int c;
+  int *retArr;
 
-input readFilesAndCountOccurencies(const char *filename1, const char *filename2) {
-  int c, ch;
-  input retStruc = {.txt1_ascarr = {0}, .txt2_ascarr = {0}};
+  FILE *file;
+  file = fopen(filename, "r");
 
-  FILE *file1, *file2;
-  file1 = fopen(filename1, "r");
-  file2 = fopen(filename2, "r");
-
-  if (file1 == NULL || file2 == NULL) {
+  if (file == NULL) {
     printf("Error, couldn't open file!");
     exit(EXIT_FAILURE);
   }
 
-  while ((c = getc(file1)) != EOF) {
-    retStruc.txt1_ascarr[c]++;
+  retArr = malloc(128 * sizeof(int));
+  if (retArr == NULL) {
+    printf("Memory allocation error!");
+    exit(EXIT_FAILURE);
   }
 
-  while ((ch = getc(file2)) != EOF) {
-    retStruc.txt2_ascarr[ch]++;
+  while ((c = getc(file)) != EOF) {
+    retArr[c]++;
   }
 
-  fclose(file1);
-  fclose(file2);
+  fclose(file);
 
-  return retStruc;
+  return retArr;
 }
 
-float PossibleRepro(int *input1_arr, int *input2_arr) {
+float getPercentage(int *input1_arr, int *input2_arr) {
   int counter = 0, length = 0;
   float result;
 
@@ -54,9 +49,10 @@ float PossibleRepro(int *input1_arr, int *input2_arr) {
 }
 
 int main() {
-  input asciival = readFilesAndCountOccurencies(INPUT_FILE1, INPUT_FILE2);
+  int *text1arr = countChars(INPUT_FILE1);
+  int *text2arr = countChars(INPUT_FILE2);
 
-  float result = PossibleRepro(asciival.txt1_ascarr, asciival.txt2_ascarr);
+  float result = getPercentage(text1arr, text2arr);
 
   printf("%.2f percents", result);
 }
